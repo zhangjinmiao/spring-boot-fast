@@ -1,0 +1,114 @@
+############################# 访问路径、端口tomcat start #############################
+server:
+  port: 8888
+  servlet:
+    context-path: /api
+  tomcat:
+    max-threads: 1000
+    min-spare-threads: 30
+    uri-encoding: UTF-8
+############################# 访问路径、端口tomcat end ###############################
+
+################################ spring config start ###############################
+spring:
+  application:
+    name: spring-boot-plus
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  jackson:
+    date-format: yyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+# logback.xml中有详细的日志配置
+logging:
+  config: classpath:config/logback.xml
+
+################################ spring config end #################################
+
+
+############################## spring-boot-fast start ##############################
+spring-boot-fast:
+  # Swagger路径
+  swagger-paths: /swagger-ui.html,/docs,/doc.html,/swagger-resources/**,/webjars/**,/v2/api-docs,/csrf,/v2/api-docs-ext,/null/swagger-resources/**
+
+############################### spring-boot-plus end ###############################
+
+############################### mybatis-plus start #################################
+mybatis-plus:
+  # 启动时是否检查MyBatis XML文件是否存在
+  check-config-location: true
+  # 支持统配符 * 或者 ; 分割
+  typeEnumsPackage:
+  # MyBatis原生配置
+  configuration:
+    # 字段名称下划线转驼峰命名
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      # 全局默认主键类型
+      id-type: auto
+      # 逻辑已删除值(默认为 1)
+      logic-delete-value: 1
+      # 逻辑未删除值(默认为 0)
+      logic-not-delete-value: 0
+  # mapper xml映射路径
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+################################ mybatis-plus end ##################################
+
+
+############################### HikariCP 数据源配置 start ################################
+---
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    cachePrepStmts: true
+    prepStmtCacheSize: 300
+    prepStmtCacheSqlLimit: 2048
+    useServerPrepStmts: true
+    useLocalSessionState: true
+    rewriteBatchedStatements: true
+    cacheResultSetMetadata: true
+    cacheServerConfiguration: true
+    elideSetAutoCommits: true
+    maintainTimeStats: false
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 20
+      idle-timeout: 10000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+############################### HikariCP 数据源配置 end ################################
+
+#################################### Swagger start #################################
+---
+spring-boot-fast:
+  swagger:
+    # 是否启用
+    enable: true
+    base:
+      # 扫描的包，多个包使用逗号隔开
+      package: com.zjm.springbootfast
+    contact:
+      email: xxxxx@qq.com
+      name: springboot.fast
+      url:
+    description:
+    title: ${spring.application.name} API Documents
+    url: https://springboot.fast
+    version: ${project.parent.version}
+    # 自定义参数配置，可配置N个
+
+
+# knife4j配置
+knife4j:
+  enable: ${spring-boot-fast.swagger.enable}
+  basic:
+    enable: true
+    username: admin
+    password: admin
+
+#################################### Swagger end ###################################
