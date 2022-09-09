@@ -12,6 +12,7 @@ import com.zjm.springbootfast.common.service.impl.BaseServiceImpl;
 import com.zjm.springbootfast.entity.User;
 import com.zjm.springbootfast.mapper.UserMapper;
 import com.zjm.springbootfast.param.UserPageParam;
+import com.zjm.springbootfast.service.MailService;
 import com.zjm.springbootfast.service.UserService;
 import com.zjm.springbootfast.util.PasswordUtil;
 import com.zjm.springbootfast.util.SaltUtil;
@@ -34,6 +35,9 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private MailService mailService;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -61,7 +65,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
         // 异步发送邮件
         if (result) {
-
+            mailService.sendSimpleMail(user.getEmail(),"注册邮件", "恭喜注册成功!!!");
         }
         return result;
     }
